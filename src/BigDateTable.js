@@ -21,7 +21,8 @@ function Square(props){
 
     if (props.isBtn){
         if (props.value)
-            return <button className={'square btn-square'+(props.curr?'-curr':'') + corner}> 
+            return <button className={'square btn-square'+(props.curr?(props.sele?'-curr':'-curr-no'):(props.sele?'-sele':'')) + corner}
+                    onClick={props.pressHandler} > 
                     {props.value} 
                    </button>
         else
@@ -69,7 +70,8 @@ function renderBRow(props){
     for (let i = 0; i < 7; i++)
         arr.push(<Square  corner={props.isFinal?( i===0?2:(i===6?3:null) ):null} 
                           isBtn={true} 
-                          value={props.values[i]} curr={props.dayPos && props.dayPos === i} /> )
+                          value={props.values[i]} curr={props.dayPos && props.dayPos === i} sele={props.daySPos && props.daySPos === i}
+                          pressHandler={() => props.pressHandler(props.values[i])} /> )
     return (<div className='square-row'> {arr} </div>)
 }
 
@@ -77,7 +79,7 @@ function renderBigTableBody(props){
     const weekNo = new Date(props.year, props.month-1, 1).getDay();
     const maxDays = new Date(props.year, props.month-1, 0).getDate() + weekNo;
     
-    let dayC = 1, dayInRow = -1;
+    let dayC = 1, dayInRow = -1,daySInRow = -1;
     let rowvals = [], finalReturn = [];
 
     for (let i = 0; i < maxDays; i++) {
@@ -90,11 +92,15 @@ function renderBigTableBody(props){
         if (i === weekNo + props.day-1){
             dayInRow = i%7;
         }
+        if (i === weekNo + props.dayS-1){
+            daySInRow = i%7;
+        }
         
         if ((i+1)%7 === 0 || (i+1) === maxDays){
-            finalReturn.push(renderBRow({values: rowvals, dayPos : dayInRow , isFinal: (i+1) === maxDays}));
+            finalReturn.push(renderBRow({values: rowvals, dayPos : dayInRow , daySPos: daySInRow,
+                                         isFinal: (i+1) === maxDays, pressHandler : props.pressHandler}));
             rowvals = [];
-            dayInRow = -1;
+            dayInRow = daySInRow = -1;
         }
     }
     return ( <SquareContainer value={finalReturn} /> );
@@ -104,18 +110,25 @@ class BigDateTable extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            selectedDay : props.currentDate.day,
+            currentDay : props.currentDate.day,
             currentMonth : this.props.currentDate.month,
             currentYear : this.props.currentDate.year,
+            selectedDay : props.currentDate.day,
         }
-        
+        this.handleDayPress = this.handleDayPress.bind(this);
+    }
+
+    handleDayPress(day){
+        this.setState({selectedDay : day});
     }
     
     render (){
         //return (<div className="col-md-6" > table, {this.props.currentDate.day}, {this.props.currentDate.month}, {this.props.currentDate.year} </div>);
         return (<div className="col-md-6 "> 
                 {renderBigTableHeader({month : this.state.currentMonth, year: this.state.currentYear})}
-                {renderBigTableBody({day : this.state.selectedDay, month : this.state.currentMonth, year: this.state.currentYear})}
+                {renderBigTableBody({day : this.state.currentDay, month : this.state.currentMonth, 
+                                     year: this.state.currentYear, dayS : this.state.selectedDay,
+                                     pressHandler: (d) => this.handleDayPress(d)})}
                 </div>
         );
     }
