@@ -22,7 +22,7 @@ function Square(props){
     if (props.isBtn){
         if (props.value)
             return <button className={'square btn-square'+(props.curr?(props.sele?'-curr':'-curr-no'):(props.sele?'-sele':'')) + corner}
-                    onClick={props.pressHandler} > 
+                    onClick={() => props.pressHandler()} > 
                     {props.value} 
                    </button>
         else
@@ -35,22 +35,23 @@ function Square(props){
 function renderBigTableHeader(props) {
     const MonthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const months = Array(12).fill(0).map((_, i) => {
-        return (<option className="selectD-content" value={i} selected={props.month === i+1} > {MonthNames[i]} </option>)
+        return (<option className="selectD-content" value={i} key={i} > {MonthNames[i]} </option>)
     });
     const iniSize = 7;
     const YearsInitial = Array(iniSize).fill(0).map((_ , i) => {
-        return (<option className="selectD-content" value={i-((iniSize/2)|0) + props.year} selected={((iniSize/2)|0) === i} > {props.year + i - ((iniSize/2)|0)} </option>)
+        const yearPrint = props.year + i - ((iniSize/2)|0);
+        return (<option className="selectD-content" value={i} kewy={i} > {yearPrint} </option>)
     } );
 
     const Header = [<div className='upHeader'> {/* cambiar esto luego */}
-                    <button className='btn-lb'> <img className="btn-img" src={arrowL} alt="prev"></img> </button>
-                    <select className='slectD' name="headerMonth" id="headerMonthId">
-                    {months}
+                    <button className='btn-lb' onClick={() => props.changeMonth(-1)} > <img className="btn-img" src={arrowL} alt="prev"></img> </button>
+                    <select className='slectD'  value={props.month-1} onChange={(m) => props.changeMonth((m.target.value|0) + 1) } name="headerMonth" id="headerMonthId">
+                    {months} 
                     </select>
-                    <select className='slectD' name="headerYears" id="headerYearsId">
+                    <select className='slectD' value={((iniSize/2)|0)} onChange={(a) => props.changeYear(((a.target.value|0) - ((iniSize/2)|0)) + props.year)} name="headerYears" id="headerYearsId">
                     {YearsInitial}
                     </select>
-                    <button className='btn-rb'> <img className="btn-img" src={arrowR} alt="next"></img>  </button> </div>
+                    <button className='btn-rb' onClick={() => props.changeMonth(-11)} > <img className="btn-img" src={arrowR} alt="next"></img>  </button> </div>
                    ]
     Header.push(<div className='square-row'>
                  {/* week's days */}
@@ -111,23 +112,54 @@ class BigDateTable extends React.Component {
         super(props);
         this.state = {
             currentDay : props.currentDate.day,
-            currentMonth : this.props.currentDate.month,
-            currentYear : this.props.currentDate.year,
+            currentMonth : props.currentDate.month,
+            currentYear : props.currentDate.year,
+            
             selectedDay : props.currentDate.day,
+            selectedMonth : props.currentDate.month,
+            selectedYear : props.currentDate.year,
         }
         this.handleDayPress = this.handleDayPress.bind(this);
+        this.handleMonthChange = this.handleMonthChange.bind(this);
+        this.handleYearChanges = this.handleYearChanges.bind(this);
+        this.DailyLessons = this.DailyLessons.bind(this);
     }
 
+    DailyLessons(){
+        console.log('hola mundo');
+    }
+
+    // esta es la unica q pide eventos
     handleDayPress(day){
         this.setState({selectedDay : day});
+    }
+
+    handleMonthChange(month){
+        console.log(month)
+        if (month < 0){
+            const newMonth = ((this.state.selectedMonth + month-1)%12+12)%12 + 1;
+            let newYear = this.state.selectedYear;
+            if (newMonth === 12 && this.state.selectedMonth === 1)
+                newYear = newYear-1;
+
+            this.setState({selectedMonth : newMonth, selectedYear: newYear});
+        } else
+            this.setState({selectedMonth : month});
+        this.DailyLessons();
+    }
+
+    handleYearChanges(year){
+        this.setState({selectedYear : year});
+        this.DailyLessons();
     }
     
     render (){
         //return (<div className="col-md-6" > table, {this.props.currentDate.day}, {this.props.currentDate.month}, {this.props.currentDate.year} </div>);
         return (<div className="col-md-6 "> 
-                {renderBigTableHeader({month : this.state.currentMonth, year: this.state.currentYear})}
-                {renderBigTableBody({day : this.state.currentDay, month : this.state.currentMonth, 
-                                     year: this.state.currentYear, dayS : this.state.selectedDay,
+                {renderBigTableHeader({month : this.state.selectedMonth, year: this.state.selectedYear,
+                                       changeMonth : (m) => this.handleMonthChange(m), changeYear : (y) => this.handleYearChanges(y)})}
+                {renderBigTableBody({day : this.state.currentDay, month : this.state.selectedMonth, 
+                                     year: this.state.selectedYear, dayS : this.state.selectedDay,
                                      pressHandler: (d) => this.handleDayPress(d)})}
                 </div>
         );
