@@ -43,7 +43,8 @@ function renderBigTableHeader(props) {
         return (<option className="selectD-content" value={i} kewy={i} > {yearPrint} </option>)
     } );
 
-    const Header = [<div className='upHeader'> {/* cambiar esto luego */}
+    return (<div className="sqheader-c">
+                <div className='upHeader' >
                     <button className='btn-lb' onClick={() => props.changeMonth(-1)} > <img className="btn-img" src={arrowL} alt="prev"></img> </button>
                     <select className='slectD'  value={props.month-1} onChange={(m) => props.changeMonth((m.target.value|0) + 1) } name="headerMonth" id="headerMonthId">
                     {months} 
@@ -51,37 +52,39 @@ function renderBigTableHeader(props) {
                     <select className='slectD' value={((iniSize/2)|0)} onChange={(a) => props.changeYear(((a.target.value|0) - ((iniSize/2)|0)) + props.year)} name="headerYears" id="headerYearsId">
                     {YearsInitial}
                     </select>
-                    <button className='btn-rb' onClick={() => props.changeMonth(-11)} > <img className="btn-img" src={arrowR} alt="next"></img>  </button> </div>
-                   ]
-    Header.push(<div className='square-row'>
-                 {/* week's days */}
-                 <Square isBtn={false} value='S' corner={0}/> 
-                 <Square isBtn={false} value='M' />
-                 <Square isBtn={false} value='T' />
-                 <Square isBtn={false} value='W' /> 
-                 <Square isBtn={false} value='T' />
-                 <Square isBtn={false} value='F' />
-                 <Square isBtn={false} value='S' corner={1}/>
+                    <button className='btn-rb' onClick={() => props.changeMonth(-11)} > <img className="btn-img" src={arrowR} alt="next"></img>  </button> 
+                </div>
+                <div className='square-row' >
+                    {/* week's days */}
+                    <Square isBtn={false} value='S' corner={0}/> 
+                    <Square isBtn={false} value='M' />
+                    <Square isBtn={false} value='T' />
+                    <Square isBtn={false} value='W' /> 
+                    <Square isBtn={false} value='T' />
+                    <Square isBtn={false} value='F' />
+                    <Square isBtn={false} value='S' corner={1}/>
                  </div>
-               )
-    return (<div className="sqheader-c">{Header}</div>);
+            </div>
+    );
 }
 function renderBRow(props){
     let arr = [];
     for (let i = 0; i < 7; i++)
         arr.push(<Square  corner={props.isFinal?( i===0?2:(i===6?3:null) ):null} 
                           isBtn={true} 
-                          value={props.values[i]} curr={props.dayPos && props.dayPos === i} sele={props.daySPos && props.daySPos === i}
-                          pressHandler={() => props.pressHandler(props.values[i])} /> )
-    return (<div className='square-row'> {arr} </div>)
+                          value={props.values[i]} curr={props.dayPos>=0 && props.dayPos === i} sele={props.daySPos>=0 && props.daySPos === i}
+                          pressHandler={() => props.pressHandler(props.values[i])} 
+                  /> )
+    return (<div className='square-row' key={props.key}> {arr} </div>)
 }
 
 function renderBigTableBody(props){
     const weekNo = new Date(props.year, props.month-1, 1).getDay();
-    const maxDays = new Date(props.year, props.month-1, 0).getDate() + weekNo;
+    const maxDays = new Date(props.year, props.month, 0).getDate() + weekNo;
     
     let dayC = 1, dayInRow = -1,daySInRow = -1;
     let rowvals = [], finalReturn = [];
+    let kcont = 0;
 
     for (let i = 0; i < maxDays; i++) {
         if (i >= weekNo){
@@ -99,9 +102,11 @@ function renderBigTableBody(props){
         
         if ((i+1)%7 === 0 || (i+1) === maxDays){
             finalReturn.push(renderBRow({values: rowvals, dayPos : dayInRow , daySPos: daySInRow,
-                                         isFinal: (i+1) === maxDays, pressHandler : props.pressHandler}));
+                                         isFinal: (i+1) === maxDays, pressHandler : props.pressHandler,
+                                         key : kcont}));
             rowvals = [];
             dayInRow = daySInRow = -1;
+            kcont += 1;
         }
     }
     return ( <SquareContainer value={finalReturn} /> );
@@ -125,40 +130,57 @@ class BigDateTable extends React.Component {
         this.DailyLessons = this.DailyLessons.bind(this);
     }
 
+    //anadir cambios si solo state
+
     DailyLessons(){
         console.log('hola mundo');
     }
 
     // esta es la unica q pide eventos
     handleDayPress(day){
+        if (day === this.state.selectedDay)
+            return;
         this.setState({selectedDay : day});
     }
 
     handleMonthChange(month){
-        console.log(month)
         if (month < 0){
             const newMonth = ((this.state.selectedMonth + month-1)%12+12)%12 + 1;
             let newYear = this.state.selectedYear;
             if (newMonth === 12 && this.state.selectedMonth === 1)
                 newYear = newYear-1;
+            else if (newMonth === 1 && this.state.selectedMonth === 12)
+                newYear = newYear+1;
+            else if (newMonth === this.state.selectedMonth)
+                return;
 
-            this.setState({selectedMonth : newMonth, selectedYear: newYear});
-        } else
-            this.setState({selectedMonth : month});
+            this.setState({selectedMonth : newMonth, selectedYear: newYear, selectedDay : -1});
+        } else{
+            if (this.state.selectedMonth === month)
+                return;
+            this.setState({selectedMonth : month, selectedDay: -1});
+        }
         this.DailyLessons();
     }
 
     handleYearChanges(year){
-        this.setState({selectedYear : year});
+        if (this.state.selectedYear === year)
+            return;
+        this.setState({selectedYear : year, selectedDay : -1});
+        this.DailyLessons();
+    }
+
+    componentDidMount(){
         this.DailyLessons();
     }
     
     render (){
-        //return (<div className="col-md-6" > table, {this.props.currentDate.day}, {this.props.currentDate.month}, {this.props.currentDate.year} </div>);
+        const boolean_exp = ( this.state.currentYear !== this.state.selectedYear || this.state.currentMonth !== this.state.selectedMonth );
+
         return (<div className="col-md-6 "> 
                 {renderBigTableHeader({month : this.state.selectedMonth, year: this.state.selectedYear,
                                        changeMonth : (m) => this.handleMonthChange(m), changeYear : (y) => this.handleYearChanges(y)})}
-                {renderBigTableBody({day : this.state.currentDay, month : this.state.selectedMonth, 
+                {renderBigTableBody({day : (boolean_exp?-1:this.state.currentDay), month : this.state.selectedMonth, 
                                      year: this.state.selectedYear, dayS : this.state.selectedDay,
                                      pressHandler: (d) => this.handleDayPress(d)})}
                 </div>
