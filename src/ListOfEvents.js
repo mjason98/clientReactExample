@@ -1,14 +1,20 @@
 import React  from "react";
-
+import PLUS from "./PLUS.svg";
 
 function Event (props){
     const tipo = ' gray';
+    const iniDate = new Date(props.H1);
+    const endDate = new Date(props.H2);
+
     return (
         <div className={"eventt"+tipo} > 
-        {props.name} <p/>
-        profesor: {props.P} <p/>
-        hora1-hora2 : {props.H1} {props.H2} <p/>
-        :: {props.value}  ::
+        <div className="eventt-header" > {props.name} </div>
+        <div className="row"> 
+            <div className="col-sm-8 eventt-author" > {props.P} </div>
+            <div className="col-sm-4 eventt-time" > | {iniDate.getHours()}:{iniDate.getMinutes()} - {endDate.getHours()}:{endDate.getMinutes()} </div>
+        </div>
+        <hr className="eventt-line"/>
+        <div className="eventt-text" > {props.value}  </div>
         </div>
     );
 }
@@ -28,6 +34,7 @@ class ListOfEvents extends React.Component {
                 />
             });
             return (<div className="col-md-5" >
+                    <div className="new-event">  <button className="btn-event"> <img src={PLUS} alt='+' /> </button> </div>
                     <div className="eventt-container">
                     {myLessons}
                     </div>
