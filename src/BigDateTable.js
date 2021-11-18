@@ -133,6 +133,7 @@ class BigDateTable extends React.Component {
             
             dailyL : [],
             loadingL : false,
+            //parentHandleDay : props.handleDay,
         }
         this.handleDayPress = this.handleDayPress.bind(this);
         this.handleMonthChange = this.handleMonthChange.bind(this);
@@ -162,15 +163,16 @@ class BigDateTable extends React.Component {
         .then(data => {
             this.setState({dailyL : data, loadingL : false});
         }, (error) => {
-            alert.log(error);
+            this.setState({dailyL : [], loadingL : false});
+            console.log(error);
         });
     }
 
-    // esta es la unica q pide eventos
     handleDayPress(day){
         if (day === this.state.selectedDay)
             return;
         this.setState({selectedDay : day});
+        this.props.handleDay({day : day, month : this.state.selectedMonth, year : this.state.selectedYear})
     }
 
     handleMonthChange(month){
@@ -191,6 +193,7 @@ class BigDateTable extends React.Component {
             this.setState({selectedMonth : month, selectedDay: -1});
             this.DailyLessons({month: month});
         }
+        this.props.handleDay({day : -1, month : 0, year : 0})
     }
 
     handleYearChanges(year){
@@ -198,10 +201,12 @@ class BigDateTable extends React.Component {
             return;
         this.setState({selectedYear : year, selectedDay : -1});
         this.DailyLessons({year: year});
+        this.props.handleDay({day : -1, month : 0, year : 0})
     }
 
     componentDidMount(){
         this.DailyLessons({});
+        this.props.handleDay({day : this.state.currentDay, month : this.state.currentMonth, year : this.state.currentYear})
     }
     
     render (){

@@ -3,20 +3,36 @@ import React  from "react";
 
 function Event (props){
     const tipo = ' gray';
-
     return (
-        <div className={"eventt"+tipo}> {props.value} </div>
+        <div className={"eventt"+tipo} > 
+        {props.name} <p/>
+        profesor: {props.P} <p/>
+        hora1-hora2 : {props.H1} {props.H2} <p/>
+        :: {props.value}  ::
+        </div>
     );
 }
 
+
+
 class ListOfEvents extends React.Component {
     render (){
-        return (<div className="col-md-5" >
+        if (this.props.loading === true)
+            return (<div className="col-md-5" >
+                        loading
+                    </div>);
+        else {
+            const myLessons = this.props.value.map(l => {
+                return <Event key={l.id} name={l.name} P={l.prophesor}
+                        value={l.description} H1={l.dateIni} H2={l.dateFin}                      
+                />
+            });
+            return (<div className="col-md-5" >
                     <div className="eventt-container">
-                    <Event value="hola" />
-                    <Event value="hola2" />
+                    {myLessons}
                     </div>
-                </div>);
+                    </div>);
+        }
     }
 }
 
