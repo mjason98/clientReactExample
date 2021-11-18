@@ -1,9 +1,49 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { Modal , Form, ModalTitle, ModalBody, FormGroup, FormLabel, FormControl } from "react-bootstrap";
+
 import Navigation from "./Navigation";
 import ListOfEvents from "./ListOfEvents";
 import BigDateTable from "./BigDateTable";
+import ModalHeader from "react-bootstrap/esm/ModalHeader";
+
+function LessonsModal(props){
+	if (!props.show)
+		return ('');
+	else{
+		return ( <div className="container">
+		<Modal 
+		{...props}
+		size="lg"
+		centered
+		aria-labelledby="contained-modal-title-vcenter"
+		>
+		<ModalHeader>
+			<ModalTitle id="contained-modal-title-vcenter">
+				New Lesson
+			</ModalTitle>
+		</ModalHeader>
+		<ModalBody>
+		<div className="row">
+			<div className="col-sm-6">
+			<Form onSubmit={props.handleNewLesson}>
+				<FormGroup controlId="lessonName">
+					<FormLabel>Subject Name</FormLabel>
+					<FormControl type="text" name="lessonName" required placeholder="0" />
+				</FormGroup>
+				<FormGroup>
+				<button onClick={props.onHide}> Cancel </button>
+				<button type="submit"> Add </button>
+				</FormGroup>
+			</Form>
+			</div>
+		</div>
+		</ModalBody>
+		</Modal>
+		</div>);
+	}
+}
 
 class App extends React.Component {
 	constructor(props){
@@ -11,18 +51,21 @@ class App extends React.Component {
 		this.state = {
 			currentDate : new Date(),
 			loading : false,
-			lessons : []
+			lessons : [],
+			selectedDate : {day:-1, year:0, month:0},
+			createLesson : false,
 		};
 		this.handleDay = this.handleDay.bind(this);
+		this.handleNewLesson = this.handleNewLesson.bind(this);
 	}
 
 	handleDay(date){
 		if (date.day < 0){
-			this.setState({lessons : []});
+			this.setState({lessons : [], selectedDate: {day:-1, year:0, month:0}});
 			return;
 		}
 		
-		this.setState({loading: true});
+		this.setState({loading: true, selectedDate : date});
         fetch(process.env.REACT_APP_API+'Lesson/lbd', {
             method:'POST',
             headers:{
@@ -43,6 +86,12 @@ class App extends React.Component {
             console.log(error);
         });
 	}
+
+	handleNewLesson(v){
+		// pedir profesores
+		// pedir topics
+		this.setState({createLesson: true});
+	}
 	
 	render () {
 		return (
@@ -54,7 +103,13 @@ class App extends React.Component {
 							   year: this.state.currentDate.getFullYear()}}
 				handleDay = {(date) => this.handleDay(date)}
 			/>
-			<ListOfEvents loading={this.state.loading} value={this.state.lessons} />
+			<ListOfEvents loading={this.state.loading} value={this.state.lessons} 
+						  handleNewLesson={() => this.handleNewLesson()}
+						  showNew={this.state.selectedDate.day>0?true:false}
+						  />
+			<LessonsModal show={this.state.createLesson} handleNewLesson={(v) => this.handleNewLesson(v)}
+						  onHide={() => this.setState({createLesson:false})}
+			/>
 			</div>
 		);
 	}

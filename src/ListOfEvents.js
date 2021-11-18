@@ -33,8 +33,9 @@ class ListOfEvents extends React.Component {
                         value={l.description} H1={l.dateIni} H2={l.dateFin}                      
                 />
             });
+
             return (<div className="col-md-5" >
-                    <div className="new-event">  <button className="btn-event"> <img src={PLUS} alt='+' /> </button> </div>
+                    <div className="new-event">  {this.props.showNew?<button className="btn-event" onClick={() => this.props.handleNewLesson()} > <img src={PLUS} alt='+' /> </button>:''} </div>
                     <div className="eventt-container">
                     {myLessons}
                     </div>
