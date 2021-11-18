@@ -19,9 +19,12 @@ function Square(props){
     else if (props.corner === 3)
         corner = ' square-brr';
 
+    //dia con eevento
+    let withLessons = props.n?(props.n<=3?' with-leson-s':(props.n<=6?' with-leson-m':' with-leson-l')):'';
+
     if (props.isBtn){
         if (props.value)
-            return <button className={'square btn-square'+(props.curr?(props.sele?'-curr':'-curr-no'):(props.sele?'-sele':'')) + corner}
+            return <button className={'square btn-square'+(props.curr?(props.sele?'-curr':'-curr-no'):(props.sele?'-sele':'')) + corner + withLessons}
                     onClick={() => props.pressHandler()} > 
                     {props.value} 
                    </button>
@@ -29,7 +32,7 @@ function Square(props){
             return <div className={'square square-empty' + corner} />
     }
     else 
-        return (<div className={'square' + corner}> {props.value} </div>)
+        return (<div className={'square' + corner + withLessons}> {props.value} </div>)
 }
 
 function renderBigTableHeader(props) {
@@ -69,12 +72,16 @@ function renderBigTableHeader(props) {
 }
 function renderBRow(props){
     let arr = [];
-    for (let i = 0; i < 7; i++)
+    for (let i = 0; i < 7; i++){
+        const n = props.dailyL.find(v => v.day===props.values[i]) //filter
+
         arr.push(<Square  corner={props.isFinal?( i===0?2:(i===6?3:null) ):null} 
                           isBtn={true} 
                           value={props.values[i]} curr={props.dayPos>=0 && props.dayPos === i} sele={props.daySPos>=0 && props.daySPos === i}
                           pressHandler={() => props.pressHandler(props.values[i])} 
+                          n = {n?n.n:null}
                   /> )
+    }
     return (<div className='square-row' key={props.key}> {arr} </div>)
 }
 
@@ -103,7 +110,7 @@ function renderBigTableBody(props){
         if ((i+1)%7 === 0 || (i+1) === maxDays){
             finalReturn.push(renderBRow({values: rowvals, dayPos : dayInRow , daySPos: daySInRow,
                                          isFinal: (i+1) === maxDays, pressHandler : props.pressHandler,
-                                         key : kcont}));
+                                         key : kcont, dailyL : props.dailyL}));
             rowvals = [];
             dayInRow = daySInRow = -1;
             kcont += 1;
@@ -123,6 +130,9 @@ class BigDateTable extends React.Component {
             selectedDay : props.currentDate.day,
             selectedMonth : props.currentDate.month,
             selectedYear : props.currentDate.year,
+            
+            dailyL : [],
+            loadingL : false,
         }
         this.handleDayPress = this.handleDayPress.bind(this);
         this.handleMonthChange = this.handleMonthChange.bind(this);
@@ -132,8 +142,28 @@ class BigDateTable extends React.Component {
 
     //anadir cambios si solo state
 
-    DailyLessons(){
-        console.log('hola mundo');
+    DailyLessons(props){
+        const year = 'year' in props?props.year:this.state.selectedYear;
+        const month = 'month' in props?props.month:this.state.selectedMonth;
+
+        this.setState({loadingL: true});
+        fetch(process.env.REACT_APP_API+'Lesson/days-bmy', {
+            method:'POST',
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json",
+            },
+            body:JSON.stringify({
+                year:year,
+                month:month,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            this.setState({dailyL : data, loadingL : false});
+        }, (error) => {
+            alert.log(error);
+        });
     }
 
     // esta es la unica q pide eventos
@@ -153,25 +183,25 @@ class BigDateTable extends React.Component {
                 newYear = newYear+1;
             else if (newMonth === this.state.selectedMonth)
                 return;
-
             this.setState({selectedMonth : newMonth, selectedYear: newYear, selectedDay : -1});
+            this.DailyLessons({year: newYear, month: newMonth});
         } else{
             if (this.state.selectedMonth === month)
                 return;
             this.setState({selectedMonth : month, selectedDay: -1});
+            this.DailyLessons({month: month});
         }
-        this.DailyLessons();
     }
 
     handleYearChanges(year){
         if (this.state.selectedYear === year)
             return;
         this.setState({selectedYear : year, selectedDay : -1});
-        this.DailyLessons();
+        this.DailyLessons({year: year});
     }
 
     componentDidMount(){
-        this.DailyLessons();
+        this.DailyLessons({});
     }
     
     render (){
@@ -182,7 +212,8 @@ class BigDateTable extends React.Component {
                                        changeMonth : (m) => this.handleMonthChange(m), changeYear : (y) => this.handleYearChanges(y)})}
                 {renderBigTableBody({day : (boolean_exp?-1:this.state.currentDay), month : this.state.selectedMonth, 
                                      year: this.state.selectedYear, dayS : this.state.selectedDay,
-                                     pressHandler: (d) => this.handleDayPress(d)})}
+                                     pressHandler: (d) => this.handleDayPress(d),
+                                     dailyL : this.state.dailyL})}
                 </div>
         );
     }

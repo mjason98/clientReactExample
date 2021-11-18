@@ -51,27 +51,27 @@ body {
 }
 .square-empty {
   background: rgb(233, 233, 233);
-  color: rgb(43, 43, 43);
+  color: rgb(141, 141, 141);
   border: hidden;
 }
 
 .btn-square {
   background: rgb(233, 233, 233);
   border: hidden;
-  color: rgb(43, 43, 43);
+  color: rgb(141, 141, 141);
   padding-top: 0px;
 }
 .btn-square-curr {
   background: rgb(170, 212, 158);
   border: hidden;
-  color: rgb(43, 43, 43);
+  color: rgb(141, 141, 141);
   padding-top: 0px;
   border-radius: 10px;
 }
 .btn-square-sele {
   background: rgb(127, 173, 226);
+  color: rgb(141, 141, 141);
   border: hidden;
-  color: rgb(43, 43, 43);
   padding-top: 0px;
   border-radius: 10px;
 }
@@ -80,8 +80,8 @@ body {
 }
 .btn-square-curr-no {
   background: rgb(193, 214, 187);
+  color: rgb(141, 141, 141);
   border: hidden;
-  color: rgb(43, 43, 43);
   padding-top: 0px;
   border-radius: 10px;
 }
@@ -95,7 +95,6 @@ body {
 .btn-square-selected {
   background: rgb(127, 198, 226);
   border: hidden;
-  color: rgb(3, 2, 70);
   padding-top: 0px;
   border-radius: 10px;
 }
@@ -104,7 +103,18 @@ body {
   background: rgb(127, 198, 226);
   border-radius: 10px;
 }
-
+.with-leson-s{
+  color: rgb(43, 43, 43);
+  border-radius: 10px;
+}
+.with-leson-m{
+  color: rgb(11, 20, 143);
+  border-radius: 10px;
+}
+.with-leson-l{
+  color: rgb(89, 7, 156);
+  border-radius: 10px;
+}
 .square-row:after {
   clear: both;
   content: "";
