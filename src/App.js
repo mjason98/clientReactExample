@@ -137,10 +137,13 @@ class App extends React.Component {
 		v.preventDefault();
 		this.setState({createLesson: false});
 
+		// problema con las hora aun
+		const todayOff = new Date().getTimezoneOffset();
+
 		const fechaIni = new Date(this.state.selectedDate.year, this.state.selectedDate.month-1, this.state.selectedDate.day,
-								  v.target.horaI.value, v.target.minI.value, 0, 0).toUTCString();
+								  v.target.horaI.value, v.target.minI.value - todayOff, 0, 0).toUTCString();
 		const fechaFin = new Date(this.state.selectedDate.year, this.state.selectedDate.month-1, this.state.selectedDate.day,
-								  v.target.horaI.value, v.target.minI.value + v.target.dur.value, 0, 0).toUTCString();
+								  v.target.horaI.value, v.target.minI.value + v.target.dur.value - todayOff, 0, 0).toUTCString();
 
 		fetch(process.env.REACT_APP_API+'Lesson', {
             method:'POST',
@@ -158,11 +161,21 @@ class App extends React.Component {
         }).then(response => response.json())
         .then(data => {
             console.log('sucess');
+			this.handleDay(this.state.selectedDate);
+			//add lesson
+			// let newLesson = data;
+			// newLesson.name = this.state.topics.find(v => v.id === data.name).name;
+			// newLesson.prophesor = this.state.namesP.find(v => v.id === data.prophesor).name;
+			// newLesson.dateIni = new Date(data.dateIni).toUTCString();
+			// newLesson.dateFin = new Date(data.dateFin).toUTCString();
 			
+			// let newLessons = this.state.lessons.concat([newLesson]);
+			// newLessons.sort((a,b) => a.dateIni < b.dateFin?-1:1);
+
+			// this.setState({lessons: newLessons});
         }, (error) => {
             console.log(error);
         });
-		console.log(v.target.name.value);
 	}
 
 	handlePreModal(){
