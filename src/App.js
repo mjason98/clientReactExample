@@ -1,7 +1,7 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Modal , Form, ModalTitle, ModalBody, FormGroup, FormLabel, FormControl } from "react-bootstrap";
+import { Modal , ModalBody} from "react-bootstrap";
 
 import Navigation from "./Navigation";
 import ListOfEvents from "./ListOfEvents";
@@ -12,6 +12,9 @@ function LessonsModal(props){
 	if (!props.show)
 		return ('');
 	else{
+		const hora = Array(12).fill(0).map((_ , i) => <option value={i+7} className="selectD-content">{i+7}</option>);
+		const mins = Array(4).fill(0).map((_ , i) => <option value={i*15} className="selectD-content">{i*15}</option>);
+
 		return ( <div className="container">
 		<Modal 
 		{...props}
@@ -20,25 +23,63 @@ function LessonsModal(props){
 		aria-labelledby="contained-modal-title-vcenter"
 		>
 		<ModalHeader>
-			<ModalTitle id="contained-modal-title-vcenter">
-				New Lesson
-			</ModalTitle>
+		<div className="eventt-header">
+		New Lesson
+		</div>
 		</ModalHeader>
 		<ModalBody>
-		<div className="row">
-			<div className="col-sm-6">
-			<Form onSubmit={props.handleNewLesson}>
-				<FormGroup controlId="lessonName">
-					<FormLabel>Subject Name</FormLabel>
-					<FormControl type="text" name="lessonName" required placeholder="0" />
-				</FormGroup>
-				<FormGroup>
-				<button onClick={props.onHide}> Cancel </button>
-				<button type="submit"> Add </button>
-				</FormGroup>
-			</Form>
+		<form onSubmit={props.handleNewLesson}>
+			<div className="row">
+				{/*name*/}
+				<div className="col-sm-4 form-col">
+				<label for="name" className="eventt-author text-in-form"> Subject </label> <p/>
+				<select id="name" name="name" className="form-sele" required>
+					<option value="1" className="selectD-content">1</option>
+					<option value="2" className="selectD-content">2</option>	
+				</select>
+				</div>
+
+				{/* profesor */}
+				<div className="col-sm-4 form-col">
+				<label for="topic" className="eventt-author text-in-form"> Given by </label> <p/>
+				<select id="topic" name="topic" className="form-sele" required>
+					<option value="1" className="selectD-content">a</option>
+					<option value="2" className="selectD-content">b</option>	
+				</select>
+				</div>
+
+				{/* horario */}
+				<div className="col-sm-4 form-col">
+					<label for="hora" className="eventt-author text-in-form"> Time and Duration</label> <p/>
+					<select id="horaI" name="horaI" className="form-sele time-sele time-row" required>
+						{hora}
+					</select>
+					<div className="sep-text time-row" >:</div>
+					<select id="minI" name="minsI" className="form-sele time-sele time-row" required>
+						{mins}
+					</select>
+					<div className="sep-text time-row" >and last</div>
+					<select id="dur" name="dur" className="form-sele time-sele time-row" required>
+						<option value={45}>45 mins</option>
+						<option value={60}>1 hour </option>
+						<option value={90}>1&#189; hour</option>
+						<option value={120}>2 hours</option>
+						<option value={180}>3 hours</option>
+					</select>
+				</div>
+				<div className="row">
+				<div className="col-sm-9 form-col">
+				<label for="desc" className="eventt-author"> Description </label> <p/>
+				<textarea id="desc" name="desc" className="form-BT" maxLength="256" placeholder="this one will be good"/>
+				</div>
+				<div className="col-sm-3 form-col">
+					<button className="btn-ok red" onClick={() => props.onHide()}>Cancel</button>
+					<button className="btn-ok" type="submit">OK</button>
+				</div>
+				</div>
 			</div>
-		</div>
+		</form>
+		
 		</ModalBody>
 		</Modal>
 		</div>);

@@ -161,6 +161,7 @@ body {
 .selectD-content{
   background-color: aliceblue;
   color: rgb(43, 43, 43);
+  border: hidden;
   border-collapse: hidden;
 }
 
@@ -242,6 +243,66 @@ body {
 }
 .btn-event:hover{
   background: rgb(65, 127, 209);
+}
+.form-col{
+  width: auto;
+  text-align: center;
+}
+.form-sele{
+  width: max-content;
+  color: black;
+  background: rgb(255, 255, 255);
+  border: hidden;
+  border-radius: 5px;
+}
+.time-sele{
+  appearance: none;
+  background: rgb(255, 255, 255);
+  padding-left: 5px;
+  padding-right: 5px;
+  width: max-content;
+  height: 30px;
+  border-radius: 0px;
+  text-align: right;
+}
+.sep-text{
+  background: rgb(255, 255, 255);
+  padding-left: 5px;
+  width: fit-content;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+.time-row{
+  display: inline;
+}
+.form-BT{
+  color: black;
+  white-space: normal;
+  width: 70%;
+  height: 80px;
+}
+.btn-ok{
+  margin-top: 40%;
+  margin-right: 10px;
+  color: rgb(239, 240, 197);
+  width: fit-content;
+  background: rgb(122, 199, 45);
+  border-radius: 10px;
+  border: hidden;
+
+  font-weight: bold;
+  font-size: 20px;
+}
+.btn-ok:hover{
+  background: rgb(117, 117, 117);
+}
+.red{
+  background: rgb(190, 46, 46);
+  color: rgb(240, 214, 197);
+}
+.text-in-form{
+  white-space: normal;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
