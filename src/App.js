@@ -12,12 +12,12 @@ function LessonsModal(props){
 	if (!props.show)
 		return ('');
 	else{
-		const hora = Array(12).fill(0).map((_ , i) => <option value={i+7} className="selectD-content">{i+7}</option>);
-		const mins = Array(4).fill(0).map((_ , i) => <option value={i*15} className="selectD-content">{i*15}</option>);
+		const hora = Array(12).fill(0).map((_ , i) => <option key={i} value={i+7} className="selectD-content">{i+7}</option>);
+		const mins = Array(4).fill(0).map((_ , i) => <option  key={i} value={i*15} className="selectD-content">{i*15}</option>);
 
 		return ( <div className="container">
 		<Modal 
-		{...props}
+		show={props.show}
 		size="lg"
 		centered
 		aria-labelledby="contained-modal-title-vcenter"
@@ -28,11 +28,11 @@ function LessonsModal(props){
 		</div>
 		</ModalHeader>
 		<ModalBody>
-		<form onSubmit={props.handleNewLesson}>
+		<form onSubmit={(v) => props.handleNewLesson(v)}>
 			<div className="row">
 				{/*name*/}
 				<div className="col-sm-4 form-col">
-				<label for="name" className="eventt-author text-in-form"> Subject </label> <p/>
+				<label htmlFor="name" className="eventt-author text-in-form"> Subject </label> <p/>
 				<select id="name" name="name" className="form-sele" required>
 					<option value="1" className="selectD-content">1</option>
 					<option value="2" className="selectD-content">2</option>	
@@ -41,7 +41,7 @@ function LessonsModal(props){
 
 				{/* profesor */}
 				<div className="col-sm-4 form-col">
-				<label for="topic" className="eventt-author text-in-form"> Given by </label> <p/>
+				<label htmlFor="topic" className="eventt-author text-in-form"> Given by </label> <p/>
 				<select id="topic" name="topic" className="form-sele" required>
 					<option value="1" className="selectD-content">a</option>
 					<option value="2" className="selectD-content">b</option>	
@@ -50,7 +50,7 @@ function LessonsModal(props){
 
 				{/* horario */}
 				<div className="col-sm-4 form-col">
-					<label for="hora" className="eventt-author text-in-form"> Time and Duration</label> <p/>
+					<label htmlFor="hora" className="eventt-author text-in-form"> Time and Duration</label> <p/>
 					<select id="horaI" name="horaI" className="form-sele time-sele time-row" required>
 						{hora}
 					</select>
@@ -69,7 +69,7 @@ function LessonsModal(props){
 				</div>
 				<div className="row">
 				<div className="col-sm-9 form-col">
-				<label for="desc" className="eventt-author"> Description </label> <p/>
+				<label htmlFor="desc" className="eventt-author"> Description </label> <p/>
 				<textarea id="desc" name="desc" className="form-BT" maxLength="256" placeholder="this one will be good"/>
 				</div>
 				<div className="col-sm-3 form-col">
@@ -131,7 +131,8 @@ class App extends React.Component {
 	handleNewLesson(v){
 		// pedir profesores
 		// pedir topics
-		this.setState({createLesson: true});
+		//this.setState({createLesson: true});
+		console.log(v);
 	}
 	
 	render () {
@@ -145,7 +146,7 @@ class App extends React.Component {
 				handleDay = {(date) => this.handleDay(date)}
 			/>
 			<ListOfEvents loading={this.state.loading} value={this.state.lessons} 
-						  handleNewLesson={() => this.handleNewLesson()}
+						  handleNewLesson={() => this.setState({createLesson:true})}
 						  showNew={this.state.selectedDate.day>0?true:false}
 						  />
 			<LessonsModal show={this.state.createLesson} handleNewLesson={(v) => this.handleNewLesson(v)}
