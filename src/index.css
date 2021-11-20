@@ -337,6 +337,12 @@ body {
 .text-in-form{
   white-space: normal;
 }
+.simple-margin{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 5px;
+  margin-left: 5ps;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
