@@ -130,42 +130,12 @@ class BigDateTable extends React.Component {
             selectedDay : props.currentDate.day,
             selectedMonth : props.currentDate.month,
             selectedYear : props.currentDate.year,
-            
-            dailyL : [],
-            loadingL : false,
+        
             //parentHandleDay : props.handleDay,
         }
         this.handleDayPress = this.handleDayPress.bind(this);
         this.handleMonthChange = this.handleMonthChange.bind(this);
         this.handleYearChanges = this.handleYearChanges.bind(this);
-        this.DailyLessons = this.DailyLessons.bind(this);
-    }
-
-    //anadir cambios si solo state
-
-    DailyLessons(props){
-        const year = 'year' in props?props.year:this.state.selectedYear;
-        const month = 'month' in props?props.month:this.state.selectedMonth;
-
-        this.setState({loadingL: true});
-        fetch(process.env.REACT_APP_API+'Lesson/days-bmy', {
-            method:'POST',
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-            },
-            body:JSON.stringify({
-                year:year,
-                month:month,
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            this.setState({dailyL : data, loadingL : false});
-        }, (error) => {
-            this.setState({dailyL : [], loadingL : false});
-            console.log(error);
-        });
     }
 
     handleDayPress(day){
@@ -186,12 +156,12 @@ class BigDateTable extends React.Component {
             else if (newMonth === this.state.selectedMonth)
                 return;
             this.setState({selectedMonth : newMonth, selectedYear: newYear, selectedDay : -1});
-            this.DailyLessons({year: newYear, month: newMonth});
+            this.props.DailyLessons({year: newYear, month: newMonth});
         } else{
             if (this.state.selectedMonth === month)
                 return;
             this.setState({selectedMonth : month, selectedDay: -1});
-            this.DailyLessons({month: month});
+            this.props.DailyLessons({year: this.state.selectedYear, month: month});
         }
         this.props.handleDay({day : -1, month : 0, year : 0})
     }
@@ -200,12 +170,12 @@ class BigDateTable extends React.Component {
         if (this.state.selectedYear === year)
             return;
         this.setState({selectedYear : year, selectedDay : -1});
-        this.DailyLessons({year: year});
+        this.props.DailyLessons({year: year, month : this.state.selectedMonth});
         this.props.handleDay({day : -1, month : 0, year : 0})
     }
 
     componentDidMount(){
-        this.DailyLessons({});
+        this.props.DailyLessons({year: this.state.selectedYear, month : this.state.selectedMonth});
         this.props.handleDay({day : this.state.currentDay, month : this.state.currentMonth, year : this.state.currentYear})
     }
     
@@ -218,7 +188,7 @@ class BigDateTable extends React.Component {
                 {renderBigTableBody({day : (boolean_exp?-1:this.state.currentDay), month : this.state.selectedMonth, 
                                      year: this.state.selectedYear, dayS : this.state.selectedDay,
                                      pressHandler: (d) => this.handleDayPress(d),
-                                     dailyL : this.state.dailyL})}
+                                     dailyL : this.props.dailyL})}
                 </div>
         );
     }

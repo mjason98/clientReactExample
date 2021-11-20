@@ -99,10 +99,36 @@ class App extends React.Component {
 			createLesson : false,
 			topics : [],
 			namesP :[],
+			dailyL : [],
 		};
 		this.handleDay = this.handleDay.bind(this);
 		this.handleNewLesson = this.handleNewLesson.bind(this);
 		this.handlePreModal = this.handlePreModal.bind(this);
+		this.DailyLessons = this.DailyLessons.bind(this);
+	}
+
+	DailyLessons(props){
+		const year = 'year' in props?props.year:null;
+        const month = 'month' in props?props.month:null;
+
+        fetch(process.env.REACT_APP_API+'Lesson/days-bmy', {
+            method:'POST',
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json",
+            },
+            body:JSON.stringify({
+                year:year,
+                month:month,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            this.setState({dailyL : data});
+        }, (error) => {
+            this.setState({dailyL : []});
+            console.log(error);
+        });
 	}
 
 	handleDay(date){
@@ -138,7 +164,7 @@ class App extends React.Component {
 		this.setState({createLesson: false});
 
 		// problema con las hora aun
-		const todayOff = new Date().getTimezoneOffset();
+		const todayOff = 0;//new Date().getTimezoneOffset();
 
 		const fechaIni = new Date(this.state.selectedDate.year, this.state.selectedDate.month-1, this.state.selectedDate.day,
 								  v.target.horaI.value, v.target.minI.value - todayOff, 0, 0).toUTCString();
@@ -161,18 +187,8 @@ class App extends React.Component {
         }).then(response => response.json())
         .then(data => {
             console.log('sucess');
+			this.DailyLessons({year: this.state.selectedDate.year, month: this.state.selectedDate.month});
 			this.handleDay(this.state.selectedDate);
-			//add lesson
-			// let newLesson = data;
-			// newLesson.name = this.state.topics.find(v => v.id === data.name).name;
-			// newLesson.prophesor = this.state.namesP.find(v => v.id === data.prophesor).name;
-			// newLesson.dateIni = new Date(data.dateIni).toUTCString();
-			// newLesson.dateFin = new Date(data.dateFin).toUTCString();
-			
-			// let newLessons = this.state.lessons.concat([newLesson]);
-			// newLessons.sort((a,b) => a.dateIni < b.dateFin?-1:1);
-
-			// this.setState({lessons: newLessons});
         }, (error) => {
             console.log(error);
         });
@@ -221,6 +237,8 @@ class App extends React.Component {
 							  month: this.state.currentDate.getMonth() + 1,
 							   year: this.state.currentDate.getFullYear()}}
 				handleDay = {(date) => this.handleDay(date)}
+				DailyLessons = {(p) => this.DailyLessons(p)} 
+				dailyL = {this.state.dailyL}
 			/>
 			<ListOfEvents loading={this.state.loading} value={this.state.lessons} 
 						  handleNewLesson={() => this.handlePreModal()}

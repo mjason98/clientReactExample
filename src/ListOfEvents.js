@@ -1,5 +1,6 @@
 import React  from "react";
 import PLUS from "./PLUS.svg";
+import pen from "./pen.svg";
 
 function Event (props){
     const tipo = ' gray';
@@ -8,7 +9,14 @@ function Event (props){
 
     return (
         <div className={"eventt"+tipo} > 
-        <div className="eventt-header" > {props.name} </div>
+        <div className="eventt-header" > {props.name} 
+        <button type="button" className="edit">
+          <img src={pen} alt="edit" /> 
+        </button>
+        <button type="button" className="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
         <div className="row"> 
             <div className="col-sm-8 eventt-author" > {props.P} </div>
             <div className="col-sm-4 eventt-time" > | {iniDate.getHours()}:{iniDate.getMinutes()} - {endDate.getHours()}:{endDate.getMinutes()} </div>
