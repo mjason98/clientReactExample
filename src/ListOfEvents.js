@@ -1,6 +1,7 @@
 import React  from "react";
 import PLUS from "./PLUS.svg";
 import pen from "./pen.svg";
+import circ from "./circ.svg";
 
 function Event (props){
     const tipo = ' gray';
@@ -33,7 +34,7 @@ class ListOfEvents extends React.Component {
     render (){
         if (this.props.loading === true)
             return (<div className="col-md-5" >
-                        loading
+                        <div className="new-event">  <div className="btn-event btn-event-empty"> <img src={circ} alt='loading' /> </div> </div>
                     </div>);
         else {
             const myLessons = this.props.value.map(l => {
