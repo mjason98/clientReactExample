@@ -5,9 +5,21 @@ import './index.css';
 import App from './App';
 import ProfAndTop from "./ProfesorsAndTopics";
 
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+
+function WrapApp(props){
+  return(
+    <BrowserRouter >
+      <Routes>
+        <Route exact path="/"            element={<App/>}/>
+        <Route exact path="/man-content" element={<ProfAndTop />} /> 
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
 ReactDOM.render(
-  //<React.StrictMode>
-    <App />
-  //</React.StrictMode>
+  <WrapApp />
   ,document.getElementById('root')
 );
