@@ -120,7 +120,7 @@ class App extends React.Component {
         });
 	}
 
-	handlePreModal(){
+	handlePreModal(state_values){
 		fetch(process.env.REACT_APP_API+'Profesor', {
             method:'GET',
             headers:{
@@ -145,7 +145,7 @@ class App extends React.Component {
         })
         .then(response => response.json())
         .then(data => {
-            this.setState({topics : data});
+            this.setState({...state_values, topics : data});
         }, (error) => {
             this.setState({topics : []});
             console.log(error);
@@ -214,16 +214,10 @@ class App extends React.Component {
 				dailyL = {this.state.dailyL}
 			/>
 			<ListOfEvents loading={this.state.loading} value={this.state.lessons} 
-						  handleNewLesson={() => {
-							  this.handlePreModal()
-							  this.setState({createLesson:true});
-						  }}
+						  handleNewLesson={() => this.handlePreModal({createLesson:true})}
 						  showNew={this.state.selectedDate.day>0?true:false}
 						  handleDelete={(ide) => this.setState({deleteLesson:true, deleteIde: ide})}
-						  handleUpdateLesson={(v) => {
-							  this.handlePreModal();
-							  this.setState({updateValues: v, updateLesson: true})
-						  }}
+						  handleUpdateLesson={(v) => this.handlePreModal({updateValues: v, updateLesson: true})}
 						  />
 			<LessonsModal show={this.state.createLesson} handleNewLesson={(v) => this.handleNewLesson(v)}
 						  onHide={() => this.setState({createLesson:false})}
