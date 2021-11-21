@@ -43,7 +43,7 @@ function renderBigTableHeader(props) {
     const iniSize = 7;
     const YearsInitial = Array(iniSize).fill(0).map((_ , i) => {
         const yearPrint = props.year + i - ((iniSize/2)|0);
-        return (<option className="selectD-content" value={i} kewy={i} > {yearPrint} </option>)
+        return (<option className="selectD-content" value={i} key={i} > {yearPrint} </option>)
     } );
 
     return (<div className="sqheader-c">
@@ -80,6 +80,7 @@ function renderBRow(props){
                           value={props.values[i]} curr={props.dayPos>=0 && props.dayPos === i} sele={props.daySPos>=0 && props.daySPos === i}
                           pressHandler={() => props.pressHandler(props.values[i])} 
                           n = {n?n.n:null}
+                          key={props.key*7 + i}
                   /> )
     }
     return (<div className='square-row' key={props.key}> {arr} </div>)
