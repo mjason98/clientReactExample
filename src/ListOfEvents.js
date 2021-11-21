@@ -10,7 +10,7 @@ function Event (props){
     return (
         <div className={"eventt"+tipo} > 
         <div className="eventt-header" > {props.name} 
-        <button type="button" className="edit">
+        <button type="button" className="edit" onClick={() => props.handleUpdateLesson()}> 
           <img src={pen} alt="edit" /> 
         </button>
         <button type="button" className="close" onClick={() => props.handleDelete()}>
@@ -39,7 +39,8 @@ class ListOfEvents extends React.Component {
             const myLessons = this.props.value.map(l => {
                 return <Event key={l.id} name={l.name} P={l.prophesor}
                         value={l.description} H1={l.dateIni} H2={l.dateFin}   
-                        handleDelete = {() => this.props.handleDelete(l.id)}                   
+                        handleDelete = {() => this.props.handleDelete(l.id)}
+                        handleUpdateLesson={() => this.props.handleUpdateLesson(l)}                   
                 />
             });
 

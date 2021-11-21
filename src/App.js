@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from "./Navigation";
 import ListOfEvents from "./ListOfEvents";
 import BigDateTable from "./BigDateTable";
-import {LessonsModal, DeleteLessonModal} from "./MyModals";
+import {LessonsModal, DeleteLessonModal, UpdateLessonsModal} from "./MyModals";
 
 class App extends React.Component {
 	constructor(props){
@@ -21,12 +21,16 @@ class App extends React.Component {
 
 			deleteLesson : false,
 			deleteIde : null,
+
+			updateLesson:false,
+			updateValues : null
 		};
 		this.handleDay = this.handleDay.bind(this);
 		this.handleNewLesson = this.handleNewLesson.bind(this);
 		this.handlePreModal = this.handlePreModal.bind(this);
 		this.DailyLessons = this.DailyLessons.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
+		this.handleUpdateLesson = this.handleUpdateLesson.bind(this); 
 	}
 
 	DailyLessons(props){
@@ -117,8 +121,6 @@ class App extends React.Component {
 	}
 
 	handlePreModal(){
-		this.setState({createLesson:true});
-
 		fetch(process.env.REACT_APP_API+'Profesor', {
             method:'GET',
             headers:{
@@ -164,6 +166,40 @@ class App extends React.Component {
 			this.handleDay(this.state.selectedDate);
 		});
 	}
+
+	handleUpdateLesson(v, the_ide){
+		v.preventDefault();
+
+		// problema con las hora aun
+		const todayOff = 0;//new Date().getTimezoneOffset();
+
+		const fechaIni = new Date(this.state.selectedDate.year, this.state.selectedDate.month-1, this.state.selectedDate.day,
+								  v.target.horaI.value, v.target.minI.value - todayOff, 0, 0).toUTCString();
+		const fechaFin = new Date(this.state.selectedDate.year, this.state.selectedDate.month-1, this.state.selectedDate.day,
+								  v.target.horaI.value, v.target.minI.value + v.target.dur.value - todayOff, 0, 0).toUTCString();
+		
+		fetch(process.env.REACT_APP_API+'Lesson/'+the_ide, {
+            method:'PUT',
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json",
+            },
+            body:JSON.stringify({
+                prophesor:v.target.name.value,
+				name:v.target.topic.value,
+                description:v.target.desc.value,
+				dateIni:fechaIni,
+				dateFin:fechaFin,
+            })
+        }).then(data => {
+            console.log('sucess update');
+			this.handleDay(this.state.selectedDate);
+        }, (error) => {
+            console.log(error);
+        });
+
+		this.setState({updateLesson: false});
+	}
 	
 	render () {
 		return (
@@ -178,9 +214,16 @@ class App extends React.Component {
 				dailyL = {this.state.dailyL}
 			/>
 			<ListOfEvents loading={this.state.loading} value={this.state.lessons} 
-						  handleNewLesson={() => this.handlePreModal()}
+						  handleNewLesson={() => {
+							  this.handlePreModal()
+							  this.setState({createLesson:true});
+						  }}
 						  showNew={this.state.selectedDate.day>0?true:false}
 						  handleDelete={(ide) => this.setState({deleteLesson:true, deleteIde: ide})}
+						  handleUpdateLesson={(v) => {
+							  this.handlePreModal();
+							  this.setState({updateValues: v, updateLesson: true})
+						  }}
 						  />
 			<LessonsModal show={this.state.createLesson} handleNewLesson={(v) => this.handleNewLesson(v)}
 						  onHide={() => this.setState({createLesson:false})}
@@ -189,6 +232,13 @@ class App extends React.Component {
 			/>
 			<DeleteLessonModal show={this.state.deleteLesson} onHide={() => this.setState({deleteLesson:false})} 
 							   handleDelete={() => this.handleDelete()}
+			/>
+			<UpdateLessonsModal show={this.state.updateLesson} 
+						  handleUpdateLesson={(v) => this.handleUpdateLesson(v, this.state.updateValues.id)}
+						  onHide={() => this.setState({updateLesson:false})}
+						  profesors={this.state.namesP}
+						  topics={this.state.topics}
+						  updateValues={this.state.updateValues}
 			/>
 			</div>
 		);
