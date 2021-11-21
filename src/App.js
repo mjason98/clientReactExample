@@ -6,6 +6,8 @@ import ListOfEvents from "./ListOfEvents";
 import BigDateTable from "./BigDateTable";
 import {LessonsModal, DeleteLessonModal, UpdateLessonsModal} from "./MyModals";
 
+import {DateTime} from "luxon";
+
 class App extends React.Component {
 	constructor(props){
 		super(props);
@@ -89,13 +91,14 @@ class App extends React.Component {
 		v.preventDefault();
 		this.setState({createLesson: false});
 
-		// problema con las hora aun
-		const todayOff = 0;//new Date().getTimezoneOffset();
+		const fechaIni = DateTime.local(this.state.selectedDate.year|0, this.state.selectedDate.month|0, this.state.selectedDate.day|0,
+								  v.target.horaI.value|0, v.target.minI.value|0, 0, 0).toString();
+		
+		const mi_mins = (v.target.minI.value|0) + (v.target.dur.value|0);
+		const mi_hours = (v.target.horaI.value|0) + ((mi_mins/60)|0); 
 
-		const fechaIni = new Date(this.state.selectedDate.year, this.state.selectedDate.month-1, this.state.selectedDate.day,
-								  v.target.horaI.value, v.target.minI.value - todayOff, 0, 0).toUTCString();
-		const fechaFin = new Date(this.state.selectedDate.year, this.state.selectedDate.month-1, this.state.selectedDate.day,
-								  v.target.horaI.value, v.target.minI.value + v.target.dur.value - todayOff, 0, 0).toUTCString();
+		const fechaFin = DateTime.local(this.state.selectedDate.year|0, this.state.selectedDate.month|0, this.state.selectedDate.day|0,
+								   mi_hours, (mi_mins%60)|0, 0, 0).toString(); //.toLocal().toString() en caso de error futuro
 
 		fetch(process.env.REACT_APP_API+'Lesson', {
             method:'POST',
@@ -170,13 +173,14 @@ class App extends React.Component {
 	handleUpdateLesson(v, the_ide){
 		v.preventDefault();
 
-		// problema con las hora aun
-		const todayOff = 0;//new Date().getTimezoneOffset();
+		const fechaIni = DateTime.local(this.state.selectedDate.year|0, this.state.selectedDate.month|0, this.state.selectedDate.day|0,
+										v.target.horaI.value|0, v.target.minI.value|0, 0, 0).toUTC().toString();
 
-		const fechaIni = new Date(this.state.selectedDate.year, this.state.selectedDate.month-1, this.state.selectedDate.day,
-								  v.target.horaI.value, v.target.minI.value - todayOff, 0, 0).toUTCString();
-		const fechaFin = new Date(this.state.selectedDate.year, this.state.selectedDate.month-1, this.state.selectedDate.day,
-								  v.target.horaI.value, v.target.minI.value + v.target.dur.value - todayOff, 0, 0).toUTCString();
+		const mi_mins = (v.target.minI.value|0) + (v.target.dur.value|0);
+		const mi_hours = (v.target.horaI.value|0) + ((mi_mins/60)|0); 
+
+		const fechaFin = DateTime.local(this.state.selectedDate.year|0, this.state.selectedDate.month|0, this.state.selectedDate.day|0,
+										mi_hours, (mi_mins%60)|0, 0, 0).toUTC().toString();
 		
 		fetch(process.env.REACT_APP_API+'Lesson/'+the_ide, {
             method:'PUT',
