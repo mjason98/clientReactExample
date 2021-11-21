@@ -80,6 +80,7 @@ class App extends React.Component {
         })
         .then(response => response.json())
         .then(data => {
+			data.sort((a,b) => a.dateIni < b.dateFin?-1:1);
             this.setState({lessons : data, loading : false});
         }, (error) => {
             this.setState({lessons : [], loading : false});
@@ -174,13 +175,13 @@ class App extends React.Component {
 		v.preventDefault();
 
 		const fechaIni = DateTime.local(this.state.selectedDate.year|0, this.state.selectedDate.month|0, this.state.selectedDate.day|0,
-										v.target.horaI.value|0, v.target.minI.value|0, 0, 0).toUTC().toString();
+										v.target.horaI.value|0, v.target.minI.value|0, 0, 0).toString();
 
 		const mi_mins = (v.target.minI.value|0) + (v.target.dur.value|0);
 		const mi_hours = (v.target.horaI.value|0) + ((mi_mins/60)|0); 
 
 		const fechaFin = DateTime.local(this.state.selectedDate.year|0, this.state.selectedDate.month|0, this.state.selectedDate.day|0,
-										mi_hours, (mi_mins%60)|0, 0, 0).toUTC().toString();
+										mi_hours, (mi_mins%60)|0, 0, 0).toString();
 		
 		fetch(process.env.REACT_APP_API+'Lesson/'+the_ide, {
             method:'PUT',

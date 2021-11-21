@@ -136,8 +136,39 @@ body {
   height: 20px;
 }
 .logo-img{
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  margin-top: 10px;
+}
+.logo-img img{
+  background: rgb(186, 185, 201);
+  border-radius: 30px;
+  padding: 5px;
+  margin-top: 5px;
   width: 50px;
   height: 50px;
+}
+.logo-img img:hover{
+  background: rgb(186, 185, 201);
+  opacity: 0.5;
+}
+.sett-img img{
+  background: rgb(128, 126, 160);
+  border-radius: 30px;
+  padding: 5px;
+  margin-top: 5px;
+  width: 50px;
+  height: 50px;
+}
+.sett-img img:hover{
+  background: rgb(99, 96, 136);
+  opacity: 0.5;
+}
+
+.logo-img button{
+  background: none;
+  border: none;
 }
 .btn-rb{
   color: aliceblue;
