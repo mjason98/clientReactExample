@@ -201,7 +201,7 @@ export function LessonsModal(props){
 	}
 }
 
-export function ProfessorModal(props){
+export function GeneralModal(props){
 	if (!props.show)
 		return ('');
 	else{
@@ -238,7 +238,7 @@ export function ProfessorModal(props){
 		</div>);
 	}
 }
-export function UpdateProfessorModal(props){
+export function UpdateGeneralModal(props){
 	if (!props.show)
 		return ('');
 	else{
@@ -276,7 +276,7 @@ export function UpdateProfessorModal(props){
 	}
 }
 
-export function DeleteProfModal(props){
+export function DeleteGeneralModal(props){
     if (!props.show)
 		return ('');
         return ( <div className="container">

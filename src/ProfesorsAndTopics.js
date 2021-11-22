@@ -4,7 +4,7 @@ import PLUS from "./PLUS.svg";
 import circ from "./circ.svg";
 import pen from "./pen.svg";
 
-import { ProfessorModal, UpdateProfessorModal , DeleteProfModal} from "./MyModals";
+import { GeneralModal, UpdateGeneralModal , DeleteGeneralModal} from "./MyModals";
 
 export function SmallEvent (props){
     const tipo = ' grayest';
@@ -30,28 +30,28 @@ export function SmallEvent (props){
     );
 }
 
-class ProfesorsList extends React.Component {
+class GeneralList extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             profs : [],
             loading : false,
-            createP: false,
+            createO: false,
 
-            updateP: false,
+            updateO: false,
             updateV: null,
-            deleteP: false,
+            deleteO: false,
             deleteV: null,
         };
         this.handleDelete = this.handleDelete.bind(this);
         this.handleProfessor = this.handleProfessor.bind(this);
-        this.handleUpdateProf = this.handleUpdateProf.bind(this); 
-        this.handleNewProfessor = this.handleNewProfessor.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this); 
+        this.handleNew = this.handleNew.bind(this);
     }
 
     handleProfessor(){
         this.setState({loading: true});
-        fetch(process.env.REACT_APP_API+'Profesor', {
+        fetch(process.env.REACT_APP_API+this.props.nameURL, {
             method:'GET',
             headers:{
                 "Accept":"application/json",
@@ -71,9 +71,9 @@ class ProfesorsList extends React.Component {
         this.handleProfessor();
     }
 
-    handleNewProfessor(event){
+    handleNew(event){
         event.preventDefault();
-        fetch(process.env.REACT_APP_API+'Profesor', {
+        fetch(process.env.REACT_APP_API+this.props.nameURL, {
             method:'POST',
             headers:{
                 "Accept":"application/json",
@@ -85,7 +85,7 @@ class ProfesorsList extends React.Component {
         }).then(response => response.json())
         .then(data => {
             console.log('sucess');
-			this.setState({createP: false});
+			this.setState({createO: false});
             this.handleProfessor();
         }, (error) => {
             console.log(error);
@@ -93,21 +93,21 @@ class ProfesorsList extends React.Component {
     }
 
     handleDelete(){
-        fetch(process.env.REACT_APP_API+'Profesor/'+this.state.deleteV.id , {
+        fetch(process.env.REACT_APP_API+this.props.nameURL+'/'+this.state.deleteV.id , {
             method:'DELETE',
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
             }
         }).then((data) => {
-			this.setState({deleteV : null, deleteP: false});
+			this.setState({deleteV : null, deleteO: false});
 			this.handleProfessor();
 		});
     }
 
-    handleUpdateProf(event){
+    handleUpdate(event){
         event.preventDefault();
-        fetch(process.env.REACT_APP_API+'Profesor/' + this.state.updateV.id, {
+        fetch(process.env.REACT_APP_API+this.props.nameURL+'/' + this.state.updateV.id, {
             method:'PUT',
             headers:{
                 "Accept":"application/json",
@@ -117,7 +117,7 @@ class ProfesorsList extends React.Component {
 				name:event.target.name.value,
             })
         }).then(data => {
-			this.setState({updateP: false});
+			this.setState({updateO: false});
             this.handleProfessor();
         }, (error) => {
             console.log(error);
@@ -125,29 +125,29 @@ class ProfesorsList extends React.Component {
     }
 
     render (){
-        const head = (this.state.loading === true)?<div className="btn-event btn-event-empty"> <img src={circ} alt='loading' /> </div>:<button className="btn-event" onClick={() => this.setState({createP:true})} > <img src={PLUS} alt='+' /> </button>;
+        const head = (this.state.loading === true)?<div className="btn-event btn-event-empty"> <img src={circ} alt='loading' /> </div>:<button className="btn-event" onClick={() => this.setState({createO:true})} > <img src={PLUS} alt='+' /> </button>;
         const profs = this.state.profs.map((v) => <SmallEvent P={v.name} key={v.id}
-                                                              handleUpdate={() => this.setState({updateV:v , updateP: true})} 
-                                                              handleDelete={() => this.setState({deleteV:v , deleteP: true})}
+                                                              handleUpdate={() => this.setState({updateV:v , updateO: true})} 
+                                                              handleDelete={() => this.setState({deleteV:v , deleteO: true})}
                                                               />);
 
         return (
             <div className="col-md-6">
-                <div className="new-event"> {head} <h3> Professors </h3> </div>
+                <div className="new-event"> {head} <h3> {this.props.title} </h3> </div>
                 <div className="eventt-container">
                 {profs}
                 </div>
 
-                <ProfessorModal show={this.state.createP}
-                                onHide={()=>this.setState({createP:false})}
-                                handleNewProfessor={(v) => this.handleNewProfessor(v)}
+                <GeneralModal show={this.state.createO}
+                                onHide={()=>this.setState({createO:false})}
+                                handleNewProfessor={(v) => this.handleNew(v)}
                                 />
-                <UpdateProfessorModal show={this.state.updateP} value={this.state.updateV} 
-                                onHide={()=>this.setState({updateP:false})}
-                                handleUpdateProf={(v) => this.handleUpdateProf(v)}
+                <UpdateGeneralModal show={this.state.updateO} value={this.state.updateV} 
+                                onHide={()=>this.setState({updateO:false})}
+                                handleUpdateProf={(v) => this.handleUpdate(v)}
                                 />
-                <DeleteProfModal show={this.state.deleteP} 
-                                onHide={()=>this.setState({deleteP:false})}
+                <DeleteGeneralModal show={this.state.deleteO} 
+                                onHide={()=>this.setState({deleteO:false})}
                                 handleDelete={() => this.handleDelete()}/>
             </div>
         );
@@ -169,7 +169,7 @@ class ProfAndTop extends React.Component {
         return(
             <div className="row">
                 <Navigation />
-                <ProfesorsList />
+                <GeneralList title="Professors" nameURL="Profesor"/>
                 <TopicsList />
             </div>
         );
