@@ -35,8 +35,6 @@ function Event (props){
     );
 }
 
-
-
 class ListOfEvents extends React.Component {
     render (){
         if (this.props.loading === true)

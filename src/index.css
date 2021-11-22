@@ -213,6 +213,15 @@ body {
   border-radius: 5px;
 
 }
+.grayest{
+  margin: auto;
+  margin-top: 5px;
+  padding-bottom: 13px;
+  
+  width: 60%;
+  background-color: rgb(218, 219, 230);
+
+}
 .eventt-header{
   white-space: nowrap;
   margin-bottom: -8px;
@@ -290,6 +299,11 @@ body {
   margin-bottom: -3%;
   text-align: center;
   width: 100%;
+}
+.new-event h3{
+  font-size: 30px;
+  font-weight: bold;
+  color: rgb(83, 83, 83);
 }
 .btn-event{
   width: 50px;
@@ -390,6 +404,21 @@ body {
   margin-bottom: 0px;
   margin-right: 5px;
   margin-left: 5ps;
+}
+.form-text{
+  width: 100%;
+  color: black;
+  background: none;
+  border: hidden;
+  border-bottom: 2px solid rgb(104, 104, 104);
+  margin-bottom: 10px;
+}
+.form-text:focus{
+  background-color: white;
+  outline: none;
+  color: black;
+  border: hidden;
+  border-bottom: 2px solid rgb(104, 104, 104);
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
