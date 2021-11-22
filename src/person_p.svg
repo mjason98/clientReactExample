@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="42.906353mm"
+   height="47.387451mm"
+   viewBox="0 0 42.906354 47.387451"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="person_p.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.9014604"
+     inkscape:cx="147.25524"
+     inkscape:cy="121.48557"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:snap-bbox="true"
+     inkscape:snap-intersection-paths="true" />
+  <defs
+     id="defs2">
+    <filter
+       id="mask-powermask-path-effect894_inverse"
+       inkscape:label="filtermask-powermask-path-effect894"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect894_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect894_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1068">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#g1064"
+         id="use1070"
+         width="100%"
+         height="100%" />
+    </clipPath>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(12.541426,-3.1079693)">
+    <ellipse
+       style="fill:#f9f9f9;stroke-width:0.264583"
+       id="path1030"
+       ry="9.1767311"
+       rx="9.1217346"
+       cy="12.2847"
+       cx="9.3629942" />
+    <path
+       id="rect1054"
+       style="fill:#f9f9f9;stroke-width:0.264583"
+       d="M -2.8002844,22.095453 H 21.198445 c 5.07757,0 9.247368,3.940449 9.165289,8.833544 l -0.164394,9.800307 c -4.053981,4.817854 -12.749112,8.186194 -13.384652,8.389922 -6.217561,1.993085 -12.8317219,1.739 -17.4568576,-0.231147 -4.6251357,-1.970146 -5.6728098,-2.495328 -11.8992564,-7.314619 l 0.575853,-10.644463 c 0.264361,-4.886638 4.0877185,-8.833544 9.1652886,-8.833544 z"
+       sodipodi:nodetypes="ssscszcss"
+       inkscape:original-d="M -2.8002844,22.095453 H 21.198445 c 5.07757,0 9.247368,3.940449 9.165289,8.833544 l -0.164394,9.800307 c -4.053981,4.817854 -12.749112,8.186194 -13.384652,8.389922 -6.217561,1.993085 -12.8317219,1.739 -17.4568576,-0.231147 -4.6251357,-1.970146 -5.6728098,-2.495328 -11.8992564,-7.314619 l 0.575853,-10.644463 c 0.264361,-4.886638 4.0877185,-8.833544 9.1652886,-8.833544 z" />
+    <g
+       id="g906"
+       style="fill:#445aa5;fill-opacity:1">
+      <g
+         inkscape:label="Clip"
+         id="g1064"
+         style="fill:#445aa5;fill-opacity:1">
+        <path
+           id="rect3004"
+           style="fill:#445aa5;fill-opacity:1;stroke-width:0.473878"
+           d="m 9.7893453,23.450655 c 2.3332897,0 4.2117137,0.87145 4.2117137,1.953925 v 20.18936 c 0,1.082474 -1.878424,1.953925 -4.2117137,1.953925 -2.3332895,0 -4.2117138,-0.871451 -4.2117138,-1.953925 V 25.40458 c 0,-1.082475 1.8784243,-1.953925 4.2117138,-1.953925 z" />
+        <path
+           id="rect3004-3"
+           style="fill:#445aa5;fill-opacity:1;stroke-width:0.473878"
+           transform="rotate(90)"
+           d="m 35.499258,-21.837954 c 2.333289,0 4.211714,0.871451 4.211714,1.953925 V 0.30533159 c 0,1.08247431 -1.878425,1.95392481 -4.211714,1.95392481 -2.333289,0 -4.211714,-0.8714505 -4.211714,-1.95392481 V -19.884029 c 0,-1.082474 1.878425,-1.953925 4.211714,-1.953925 z" />
+      </g>
+    </g>
+  </g>
+</svg>

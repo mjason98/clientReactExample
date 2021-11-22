@@ -142,7 +142,7 @@ body {
   margin-top: 10px;
 }
 .logo-img img{
-  background: rgb(186, 185, 201);
+  background: rgb(128, 126, 160);
   border-radius: 30px;
   padding: 5px;
   margin-top: 5px;
@@ -150,7 +150,6 @@ body {
   height: 50px;
 }
 .logo-img img:hover{
-  background: rgb(186, 185, 201);
   opacity: 0.5;
 }
 .sett-img img{
@@ -199,6 +198,13 @@ body {
 .eventt-container{
   width: 100%;
   margin-top: 5%;
+
+  height: 650px;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+html{
+  overflow-x: hidden;
 }
 
 .eventt{
@@ -337,7 +343,7 @@ body {
   height: 35px; 
 }
 .btn-event:hover{
-  background: rgb(65, 127, 209);
+  opacity: 0.8;
 }
 .form-col{
   width: auto;
@@ -419,6 +425,11 @@ body {
   color: black;
   border: hidden;
   border-bottom: 2px solid rgb(104, 104, 104);
+}
+.nav-sha{
+  box-shadow: 5px 0px 5px gray;
+  margin-top: -20px;
+  height: 100vmax;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

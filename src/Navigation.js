@@ -8,12 +8,12 @@ function Navigation () {
     const navigate = useNavigate();
 
     return (<div className="col-md-1" >
-            <div className="logo-img" >
-            <button onClick={() => navigate("/")} > <img src={agenda} alt="prev" /> </button>
-            </div>
-            <div className="logo-img sett-img" >
-            <button onClick={() => navigate("/man-content")}> <img src={person} alt="prev" /> </button>
-            </div>
+                <div className="logo-img" >
+                <button onClick={() => navigate("/")} > <img src={agenda} alt="prev" /> </button>
+                </div>
+                <div className="logo-img sett-img" >
+                <button onClick={() => navigate("/man-content")}> <img src={person} alt="prev" /> </button>
+                </div>
             </div>);
 
 }

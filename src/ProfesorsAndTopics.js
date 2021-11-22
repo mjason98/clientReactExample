@@ -1,8 +1,9 @@
 import React from "react";
 import Navigation from "./Navigation";
-import PLUS from "./PLUS.svg";
+import book from "./book.svg";
 import circ from "./circ.svg";
 import pen from "./pen.svg";
+import person_p from "./person_p.svg"
 
 import { GeneralModal, UpdateGeneralModal , DeleteGeneralModal} from "./MyModals";
 
@@ -125,14 +126,14 @@ class GeneralList extends React.Component {
     }
 
     render (){
-        const head = (this.state.loading === true)?<div className="btn-event btn-event-empty"> <img src={circ} alt='loading' /> </div>:<button className="btn-event" onClick={() => this.setState({createO:true})} > <img src={PLUS} alt='+' /> </button>;
+        const head = (this.state.loading === true)?<div className="btn-event btn-event-empty"> <img src={circ} alt='loading' /> </div>:<button className="btn-event" onClick={() => this.setState({createO:true})} > <img src={this.props.icon} alt='+' /> </button>;
         const profs = this.state.profs.map((v) => <SmallEvent P={v.name} key={v.id}
                                                               handleUpdate={() => this.setState({updateV:v , updateO: true})} 
                                                               handleDelete={() => this.setState({deleteV:v , deleteO: true})}
                                                               />);
 
         return (
-            <div className="col-md-6">
+            <div className="col-md-5">
                 <div className="new-event"> {head} <h3> {this.props.title} </h3> </div>
                 <div className="eventt-container">
                 {profs}
@@ -141,6 +142,8 @@ class GeneralList extends React.Component {
                 <GeneralModal show={this.state.createO}
                                 onHide={()=>this.setState({createO:false})}
                                 handleNewProfessor={(v) => this.handleNew(v)}
+                                title={this.props.dialogT}
+                                placeholder={this.props.dialogP}
                                 />
                 <UpdateGeneralModal show={this.state.updateO} value={this.state.updateV} 
                                 onHide={()=>this.setState({updateO:false})}
@@ -154,23 +157,13 @@ class GeneralList extends React.Component {
     }
 } 
 
-class TopicsList extends React.Component {
-    render (){
-        return (
-            <div className="col-md-5">
-                topics
-            </div>
-        );
-    }
-} 
-
 class ProfAndTop extends React.Component {
     render(){
         return(
             <div className="row">
                 <Navigation />
-                <GeneralList title="Professors" nameURL="Profesor"/>
-                <TopicsList />
+                <GeneralList title="Professors" nameURL="Profesor" dialogT="New professor" dialogP="someone" icon={person_p}/>
+                <GeneralList title="Subjects" nameURL="Topic" dialogT="New subject" dialogP="things and more" icon={book} />
             </div>
         );
     }

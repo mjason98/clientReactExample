@@ -215,7 +215,7 @@ export function GeneralModal(props){
 		>
 		<ModalHeader>
 		<div className="eventt-header">
-		New Professor
+		{props.title}
 		</div>
 		</ModalHeader>
 		<ModalBody>
@@ -224,7 +224,7 @@ export function GeneralModal(props){
 				{/* profesor */}
 				<div className="col-sm-12 form-col">
 				<label htmlFor="name" className="eventt-author text-in-form"> Name </label> <p/>
-				<input type="text" id="name" name="name" className="form-text" required placeholder="Sr. Someone"/>
+				<input type="text" id="name" name="name" className="form-text" required placeholder={props.placeholder}/>
 				</div>
 				<div className="col-sm-12 form-col">
 					<button className="btn-ok red simple-margin" onClick={() => props.onHide()}>Cancel</button>
