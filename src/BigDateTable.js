@@ -131,8 +131,6 @@ class BigDateTable extends React.Component {
             selectedDay : props.currentDate.day,
             selectedMonth : props.currentDate.month,
             selectedYear : props.currentDate.year,
-        
-            //parentHandleDay : props.handleDay,
         }
         this.handleDayPress = this.handleDayPress.bind(this);
         this.handleMonthChange = this.handleMonthChange.bind(this);
