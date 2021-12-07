@@ -398,6 +398,21 @@ html{
 .btn-ok:hover{
   background: rgb(117, 117, 117);
 }
+.btn-alt{
+  margin-top: 40%;
+  margin-right: 10px;
+  color: rgb(239, 240, 197);
+  width: fit-content;
+  background: rgb(80, 117, 185);
+  border-radius: 10px;
+  border: hidden;
+
+  font-weight: bold;
+  font-size: 20px;
+}
+.btn-alt:hover{
+  background: rgb(117, 117, 117);
+}
 .red{
   background: rgb(190, 46, 46);
   color: rgb(240, 214, 197);
@@ -434,4 +449,45 @@ html{
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin img {
+  background-color: rgb(99, 96, 136);
+  border-radius: 50px;
+  width: 80px;
+  height: 80px;
+  padding: 5px;
+  margin-top: 10%;
+}
+.btn-clear{
+  margin-top: 0px;
+}
+
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
