@@ -1,11 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import agenda from "./agenda.svg"
 import { useNavigate } from 'react-router-dom' 
 
 const Logging = (props) => {
     const navigate = useNavigate();
 
-    useEffect(() => {
+    const firstUpdate = useRef(true);
+    useLayoutEffect(() => {
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        }
+
         const token = window.sessionStorage.getItem("agenda_token");
         if (token && token !== '')
             navigate('/');
@@ -31,7 +37,13 @@ const Logging = (props) => {
 export const Siging = (props) => {
     const navigate = useNavigate();
 
-    useEffect(() => {
+    const firstUpdate = useRef(true);
+    useLayoutEffect(() => {
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        }
+
         const token = window.sessionStorage.getItem("agenda_token");
         if (token && token !== '')
             navigate('/');
