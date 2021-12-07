@@ -4,8 +4,12 @@ import person from "./person.svg"
 
 import { useNavigate } from 'react-router-dom' 
 
-function Navigation () {
+function Navigation (props) {
     const navigate = useNavigate();
+    const token = window.sessionStorage.getItem("agenda_token");
+
+    if (token && token === '')
+        navigate('/logging');
 
     return (<div className="col-md-1" >
                 <div className="logo-img" >

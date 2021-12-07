@@ -33,11 +33,18 @@ class App extends React.Component {
 		this.DailyLessons = this.DailyLessons.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
 		this.handleUpdateLesson = this.handleUpdateLesson.bind(this); 
+		this.getMyToken = this.getMyToken.bind(this);
+	}
+
+	getMyToken(){
+		const token = window.sessionStorage.getItem("agenda_token");
+		return token;
 	}
 
 	DailyLessons(props){
 		const year = 'year' in props?props.year:null;
         const month = 'month' in props?props.month:null;
+		
 
         fetch(process.env.REACT_APP_API+'Lesson/days-bmy', {
             method:'POST',
