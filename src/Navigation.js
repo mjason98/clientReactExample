@@ -8,8 +8,9 @@ function Navigation (props) {
     const navigate = useNavigate();
     const token = window.sessionStorage.getItem("agenda_token");
 
-    if (token && token === '')
-        navigate('/logging');
+    if ((token && token === '') || !token)
+        navigate('/logging')
+        
 
     return (<div className="col-md-1" >
                 <div className="logo-img" >

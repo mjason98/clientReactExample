@@ -38,19 +38,21 @@ class App extends React.Component {
 
 	getMyToken(){
 		const token = window.sessionStorage.getItem("agenda_token");
-		return token;
+		return token?token:"";
 	}
 
 	DailyLessons(props){
 		const year = 'year' in props?props.year:null;
         const month = 'month' in props?props.month:null;
-		
+		const token = this.getMyToken();
+
 
         fetch(process.env.REACT_APP_API+'Lesson/days-bmy', {
             method:'POST',
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+				"Authorization": "Bearer " + token,
             },
             body:JSON.stringify({
                 year:year,
@@ -78,6 +80,7 @@ class App extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+				"Authorization": "Bearer " + this.getMyToken(),
             },
             body:JSON.stringify({
                 year:date.year,
@@ -113,6 +116,7 @@ class App extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+				"Authorization": "Bearer " + this.getMyToken(),
             },
             body:JSON.stringify({
                 prophesor:v.target.name.value,
@@ -137,6 +141,7 @@ class App extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+				"Authorization": "Bearer " + this.getMyToken(),
             }
         })
         .then(response => response.json())
@@ -152,6 +157,7 @@ class App extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+				"Authorization": "Bearer " + this.getMyToken(),
             }
         })
         .then(response => response.json())
@@ -169,6 +175,7 @@ class App extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+				"Authorization": "Bearer " + this.getMyToken(),
             }
         }).then((data) => {
 			this.setState({deleteIde : null, deleteLesson: false});
@@ -195,6 +202,7 @@ class App extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+				"Authorization": "Bearer " + this.getMyToken(),
             },
             body:JSON.stringify({
                 prophesor:v.target.name.value,

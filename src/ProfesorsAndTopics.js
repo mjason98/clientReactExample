@@ -48,7 +48,13 @@ class GeneralList extends React.Component {
         this.handleProfessor = this.handleProfessor.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this); 
         this.handleNew = this.handleNew.bind(this);
+        this.getMyToken = this.getMyToken.bind(this);
     }
+
+    getMyToken(){
+		const token = window.sessionStorage.getItem("agenda_token");
+		return token?token:"";
+	}
 
     handleProfessor(){
         this.setState({loading: true});
@@ -57,6 +63,7 @@ class GeneralList extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+                "Authorization": "Bearer " + this.getMyToken()
             }
         })
         .then(response => response.json())
@@ -79,6 +86,7 @@ class GeneralList extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+                "Authorization": "Bearer " + this.getMyToken()
             },
             body:JSON.stringify({
 				name:event.target.name.value,
@@ -99,6 +107,7 @@ class GeneralList extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+                "Authorization": "Bearer " + this.getMyToken()
             }
         }).then((data) => {
 			this.setState({deleteV : null, deleteO: false});
@@ -113,6 +122,7 @@ class GeneralList extends React.Component {
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json",
+                "Authorization": "Bearer " + this.getMyToken()
             },
             body:JSON.stringify({
 				name:event.target.name.value,
